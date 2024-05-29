@@ -30,7 +30,7 @@
                         </div>
                         {% endif %}
                         <div class="badge badge-light p-2 text-left">
-                            <div class="mb-2">{{ question.author.username }}</div>
+                            <div class="mb-2"><a href="{% url 'pybo:profile' question.author.username %}">{{ question.author.username }}</a></div>
                             <div>{{ question.create_date }}</div>
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                         <div class="comment py-2 text-muted">
                             <span style="white-space: pre-line;">{{ comment.content }}</span>
                             <span>
-                                - {{ comment.author }}, {{ comment.create_date }}
+                                - <a href="{% url 'pybo:profile' comment.author.username %}">{{ comment.author.username }}</a>, {{ comment.create_date }}
                                 {% if comment.modify_date %}
                                 (수정:{{ comment.modify_date }})
                                 {% endif %}
@@ -94,7 +94,7 @@
                         </div>
                         {% endif %}
                         <div class="badge badge-light p-2 text-left">
-                            <div class="mb-2">{{ answer.author.username }}</div>
+                            <div class="mb-2"><a href="{% url 'pybo:profile' answer.author.username %}">{{ answer.author.username }}</a></div>
                             <div>{{ answer.create_date }}</div>
                         </div>
                     </div>

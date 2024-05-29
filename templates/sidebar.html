@@ -1,0 +1,6 @@
+<nav id="sidebar" class="border-secondary">
+    <div class="list-group">
+        <a class="rounded-0 list-group-item list-group-item-action list-group-item-light {% if category_id == 1 %}active{% endif %}" href="{% url 'pybo:index_with_category' 1 %}">질문과답변</a>
+        <a class="rounded-0 list-group-item list-group-item-action list-group-item-light {% if category_id == 2 %}active{% endif %}" href="{% url 'pybo:index_with_category' 2 %}">자유게시판</a>                
+    </div>
+</nav>

@@ -1,12 +1,15 @@
 from django.urls import path
-
-from .views import base_views, question_views, answer_views, comment_views, vote_views
+from .views import base_views, question_views, answer_views, comment_views, vote_views, profile_views
 
 app_name = 'pybo'
 
 urlpatterns = [
+    #profile_view.py
+    path('profile/<str:username>/', profile_views.profile, name='profile'),
+
     # base_views.py
     path('', base_views.index, name='index'),
+    path('category/<int:category_id>/', base_views.index, name='index_with_category'),
     path('<int:question_id>/', base_views.detail, name='detail'),
 
     # question_views.py

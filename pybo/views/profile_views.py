@@ -1,20 +1,18 @@
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
 from django.shortcuts import render, get_object_or_404
-from ..models import Question
+from ..models import User, Question
 
-
-def index(request, category_id=1):
-    """
-    pybo 목록 출력
-    """
+def profile(request, username):
+    user = get_object_or_404(User, username=username)
+    
     # 입력 파라미터
     page = request.GET.get('page', '1')  # 페이지
     kw = request.GET.get('kw', '')  # 검색어
     so = request.GET.get('so', 'recent')  # 정렬기준
 
     # 기본 카테고리 필터링
-    question_list = Question.objects.filter(category=category_id)
+    question_list = Question.objects.filter(author=user)
 
     # 정렬
     if so == 'recommend':
@@ -37,14 +35,5 @@ def index(request, category_id=1):
     paginator = Paginator(question_list, 10)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
 
-    context = {'question_list': page_obj, 'page': page, 'kw': kw, 'so': so, 'category_id': category_id}
-    return render(request, 'pybo/question_list.html', context)
-
-
-def detail(request, question_id):
-    """
-    pybo 내용 출력
-    """
-    question = get_object_or_404(Question, pk=question_id)
-    context = {'question': question}
-    return render(request, 'pybo/question_detail.html', context)
+    context = {'user': user, 'question_list': page_obj, 'page': page, 'kw': kw, 'so': so}
+    return render(request, 'pybo/profile.html', context)
