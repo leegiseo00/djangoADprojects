@@ -8,6 +8,7 @@ urlpatterns = [
     path('profile/question/<str:username>/', profile_views.profile_question, name='profile_question'),
     path('profile/answer/<str:username>/', profile_views.profile_answer, name='profile_answer'),
     path('profile/comment/<str:username>/', profile_views.profile_comment, name='profile_comment'),
+    path('profile/introduction/<str:username>/', profile_views.profile_introduction, name='profile_introduction'),
 
     # base_views.py
     path('', base_views.index, name='index'),

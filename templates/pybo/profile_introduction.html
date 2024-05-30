@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load pybo_filter %}
+{% block content %}
+<div class="container my-3 d-flex">
+    <div class="col-10 flex-grow-1">
+        <h2>{{ profile_user.username }}</h2>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'pybo:profile_introduction' username=profile_user.username %}">자기소개</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="{% url 'pybo:profile_question' username=profile_user.username %}">게시</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="{% url 'pybo:profile_answer' username=profile_user.username %}">답변</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="{% url 'pybo:profile_comment' username=profile_user.username %}">댓글</a>
+            </li>
+        </ul>
+        <div style="margin-bottom: 20px;"></div>
+        <table class="table">
+            {% if profile_user.profile.introduction %}
+                {{ profile_user.profile.introduction }}
+            {% else %}
+                자기 소개를 작성해주세요.
+            {% endif %}
+        </table>
+    </div>
+</div>
+{% endblock %}

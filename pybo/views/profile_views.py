@@ -1,7 +1,17 @@
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
 from django.shortcuts import render, get_object_or_404
-from ..models import User, Question, Answer, Comment
+from ..models import User, Question, Answer, Comment, Profile
+
+def profile_introduction(request, username):
+    profile_user = get_object_or_404(User, username=username)
+
+    profile = Profile.objects.get(author=profile_user)
+
+    context = {'profile_user': profile_user, 'introduction': profile.introduction}
+
+    return render(request, 'pybo/profile_introduction.html', context)
+
 
 def profile_question(request, username):
     profile_user = get_object_or_404(User, username=username)

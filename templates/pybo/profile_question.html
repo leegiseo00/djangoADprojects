@@ -6,7 +6,7 @@
         <h2>{{ profile_user.username }}</h2>
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link " href="{% url 'pybo:profile_question' username=profile_user.username %}">자기소개</a>
+                <a class="nav-link " href="{% url 'pybo:profile_introduction' username=profile_user.username %}">자기소개</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link active" href="{% url 'pybo:profile_question' username=profile_user.username %}">게시</a>
