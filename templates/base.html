@@ -10,36 +10,12 @@
     <!-- pybo CSS -->
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     <title>Hello, pybo!</title>
-    <style>
-        .container {
-            display: flex;
-            margin-top: 20px;
-            width: 120%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .sidebar {
-            width: 200px;
-            background-color: #ffffff;
-        }
-        .content {
-            flex-grow: 1;
-            background-color: #ffffff;
-            margin-left: auto;
-        }
-    </style>
 </head>
 <body>
     {% include "navbar.html" %}
-    <div class="container">
-        <div class="sidebar">
-            {% include "sidebar.html" %}
-        </div>
-        <div class="content">
-            <!-- 기본 템플릿 안에 삽입될 내용 Start -->
-            {% block content %}
-            {% endblock %}
-        </div>
+    <!-- 기본 템플릿 안에 삽입될 내용 Start -->
+    {% block content %}
+    {% endblock %}
     </div>
     <!-- jQuery JS -->
     <script src="{% static 'jquery-3.4.1.min.js' %}"></script>

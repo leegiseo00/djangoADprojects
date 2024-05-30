@@ -6,16 +6,16 @@
         <h2>{{ user.username }}</h2>
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link " href="{% url 'pybo:profile' username=user.username %}">자기소개</a>
+                <a class="nav-link " href="{% url 'pybo:profile_question' username=user.username %}">자기소개</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="{% url 'pybo:profile' username=user.username %}">게시</a>
+                <a class="nav-link " href="{% url 'pybo:profile_question' username=user.username %}">게시</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="{% url 'pybo:profile' username=user.username %}">답변</a>
+                <a class="nav-link active" href="{% url 'pybo:profile_answer' username=user.username %}">답변</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="{% url 'pybo:profile' username=user.username %}">댓글</a>
+                <a class="nav-link " href="{% url 'pybo:profile_comment' username=user.username %}">댓글</a>
             </li>
         </ul>
         <div class="row justify-content-between my-3">
@@ -33,37 +33,34 @@
                 <th>번호</th>
                 <th >카테고리</th>
                 <th>추천</th>
-                <th style="width:40%">제목</th>
+                <th style="width:40%">내용</th>
                 <th>글쓴이</th>
                 <th>작성일시</th>
             </tr>
             </thead>
             <tbody>
-            {% if question_list %}
-            {% for question in question_list %}
+            {% if answer_list %}
+            {% for answer in answer_list %}
             <tr class="text-center">
                 <td>
                     <!-- 번호 = 전체건수 - 시작인덱스 - 현재인덱스 + 1 -->
-                    {{ question_list.paginator.count|sub:question_list.start_index|sub:forloop.counter0|add:1 }}
+                    {{ answer_list.paginator.count|sub:answer_list.start_index|sub:forloop.counter0|add:1 }}
                 </td>
                 <td>
-                    {{ question.category }}
+                    {{ answer.question.category }}
                 </td>
                 <td>
-                    {% if question.voter.all.count > 0 %}
-                    <span class="badge badge-warning px-2 py-1">{{ question.voter.all.count }}</span>
+                    {% if answer.voter.all.count > 0 %}
+                    <span class="badge badge-warning px-2 py-1">{{ answer.voter.all.count }}</span>
                     {% endif %}
                 </td>
                 <td class="text-left">
-                    <a href="{% url 'pybo:detail' question.id %}">{{ question.subject }}</a>
-                    {% if question.answer_set.count > 0 %}
-                    <span class="text-danger small ml-2">{{ question.answer_set.count }}</span>
-                    {% endif %}
+                    <a href="{% url 'pybo:detail' answer.question.id %}">{{ answer.content }}</a>
                 </td>
                 <td>
-                    <a href="{% url 'pybo:profile' question.author.username %}">{{ question.author.username }}</a>
+                    <a href="{% url 'pybo:profile_question' answer.question.author.username %}">{{ answer.author.username }}</a>
                 </td>
-                <td>{{ question.create_date }}</td>
+                <td>{{ answer.create_date }}</td>
             </tr>
             {% endfor %}
             {% else %}
@@ -76,9 +73,9 @@
         <!-- 페이징처리 시작 -->
         <ul class="pagination justify-content-center">
             <!-- 이전페이지 -->
-            {% if question_list.has_previous %}
+            {% if answer_list.has_previous %}
             <li class="page-item">
-                <a class="page-link" data-page="{{ question_list.previous_page_number }}" href="#">이전</a>
+                <a class="page-link" data-page="{{ answer_list.previous_page_number }}" href="#">이전</a>
             </li>
             {% else %}
             <li class="page-item disabled">
@@ -86,9 +83,9 @@
             </li>
             {% endif %}
             <!-- 페이지리스트 -->
-            {% for page_number in question_list.paginator.page_range %}
-            {% if page_number >= question_list.number|add:-5 and page_number <= question_list.number|add:5 %}
-                {% if page_number == question_list.number %}
+            {% for page_number in answer_list.paginator.page_range %}
+            {% if page_number >= answer_list.number|add:-5 and page_number <= answer_list.number|add:5 %}
+                {% if page_number == answer_list.number %}
                 <li class="page-item active" aria-current="page">
                     <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
                 </li>
@@ -100,9 +97,9 @@
             {% endif %}
             {% endfor %}
             <!-- 다음페이지 -->
-            {% if question_list.has_next %}
+            {% if answer_list.has_next %}
             <li class="page-item">
-                <a class="page-link" data-page="{{ question_list.next_page_number }}" href="#">다음</a>
+                <a class="page-link" data-page="{{ answer_list.next_page_number }}" href="#">다음</a>
             </li>
             {% else %}
             <li class="page-item disabled">
@@ -113,7 +110,7 @@
         <!-- 페이징처리 끝 -->
     </div>
 </div>
-<form id="searchForm" method="get" action="{% url 'pybo:profile' username=user.username %}">
+<form id="searchForm" method="get" action="{% url 'pybo:profile_answer' username=user.username %}">
     <input type="hidden" id="page" name="page" value="{{ page }}">
     <input type="hidden" id="so" name="so" value="{{ so }}">
 </form>
@@ -123,12 +120,6 @@
 $(document).ready(function(){
     $(".page-link").on('click', function() {
         $("#page").val($(this).data("page"));
-        $("#searchForm").submit();
-    });
-
-    $("#btn_search").on('click', function() {
-        $("#kw").val($(".kw").val());
-        $("#page").val(1);  // 검색버튼을 클릭할 경우 1페이지부터 조회한다.
         $("#searchForm").submit();
     });
 

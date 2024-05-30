@@ -5,7 +5,9 @@ app_name = 'pybo'
 
 urlpatterns = [
     #profile_view.py
-    path('profile/<str:username>/', profile_views.profile, name='profile'),
+    path('profile/question/<str:username>/', profile_views.profile_question, name='profile_question'),
+    path('profile/answer/<str:username>/', profile_views.profile_answer, name='profile_answer'),
+    path('profile/comment/<str:username>/', profile_views.profile_comment, name='profile_comment'),
 
     # base_views.py
     path('', base_views.index, name='index'),
