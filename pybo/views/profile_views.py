@@ -4,14 +4,14 @@ from django.shortcuts import render, get_object_or_404
 from ..models import User, Question, Answer, Comment
 
 def profile_question(request, username):
-    user = get_object_or_404(User, username=username)
+    profile_user = get_object_or_404(User, username=username)
     
     # 입력 파라미터
     page = request.GET.get('page', '1')  # 페이지
     so = request.GET.get('so', 'recent')  # 정렬기준
 
     # 기본 카테고리 필터링
-    question_list = Question.objects.filter(author=user)
+    question_list = Question.objects.filter(author=profile_user)
 
     # 정렬
     if so == 'recommend':
@@ -25,25 +25,25 @@ def profile_question(request, username):
     paginator = Paginator(question_list, 10)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
 
-    context = {'user': user, 'question_list': page_obj, 'page': page, 'so': so}
+    context = {'profile_user': profile_user, 'question_list': page_obj, 'page': page, 'so': so}
     return render(request, 'pybo/profile_question.html', context)
 
 
 def profile_answer(request, username):
-    user = get_object_or_404(User, username=username)
+    profile_user = get_object_or_404(User, username=username)
     
     # 입력 파라미터
     page = request.GET.get('page', '1')  # 페이지
     so = request.GET.get('so', 'recent')  # 정렬기준
 
     # 기본 카테고리 필터링
-    answer_list = Answer.objects.filter(author=user)
+    answer_list = Answer.objects.filter(author=profile_user)
 
     # 정렬
     if so == 'recommend':
         answer_list = answer_list.annotate(num_voter=Count('voter')).order_by('-num_voter', '-create_date')
     elif so == 'popular':
-        answer_list = answer_list.annotate(num_answer=Count('answer')).order_by('-num_answer', '-create_date')
+        answer_list = answer_list.annotate(num_answer=Count('question__answer')).order_by('-num_answer', '-create_date')
     else:  # recent
         answer_list = answer_list.order_by('-create_date')
 
@@ -51,25 +51,23 @@ def profile_answer(request, username):
     paginator = Paginator(answer_list, 10)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
 
-    context = {'user': user, 'answer_list': page_obj, 'page': page, 'so': so}
+    context = {'profile_user': profile_user, 'answer_list': page_obj, 'page': page, 'so': so}
     return render(request, 'pybo/profile_answer.html', context)
 
 
 def profile_comment(request, username):
-    user = get_object_or_404(User, username=username)
+    profile_user = get_object_or_404(User, username=username)
     
     # 입력 파라미터
     page = request.GET.get('page', '1')  # 페이지
     so = request.GET.get('so', 'recent')  # 정렬기준
 
     # 기본 카테고리 필터링
-    comment_list = Comment.objects.filter(author=user)
+    comment_list = Comment.objects.filter(author=profile_user)
 
     # 정렬
-    if so == 'recommend':
-        comment_list = comment_list.annotate(num_voter=Count('voter')).order_by('-num_voter', '-create_date')
-    elif so == 'popular':
-        comment_list = comment_list.annotate(num_answer=Count('answer')).order_by('-num_answer', '-create_date')
+    if so == 'popular':
+        comment_list = comment_list.annotate(num_answer=Count('question__answer')).order_by('-num_answer', '-create_date')
     else:  # recent
         comment_list = comment_list.order_by('-create_date')
 
@@ -77,5 +75,5 @@ def profile_comment(request, username):
     paginator = Paginator(comment_list, 10)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
 
-    context = {'user': user, 'comment_list': page_obj, 'page': page, 'so': so}
+    context = {'profile_user': profile_user, 'comment_list': page_obj, 'page': page, 'so': so}
     return render(request, 'pybo/profile_comment.html', context)

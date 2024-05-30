@@ -3,26 +3,25 @@
 {% block content %}
 <div class="container my-3 d-flex">
     <div class="col-10 flex-grow-1">
-        <h2>{{ user.username }}</h2>
+        <h2>{{ profile_user.username }}</h2>
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link " href="{% url 'pybo:profile_question' username=user.username %}">자기소개</a>
+                <a class="nav-link " href="{% url 'pybo:profile_question' username=profile_user.username %}">자기소개</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="{% url 'pybo:profile_question' username=user.username %}">게시</a>
+                <a class="nav-link " href="{% url 'pybo:profile_question' username=profile_user.username %}">게시</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="{% url 'pybo:profile_answer' username=user.username %}">답변</a>
+                <a class="nav-link " href="{% url 'pybo:profile_answer' username=profile_user.username %}">답변</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="{% url 'pybo:profile_comment' username=user.username %}">댓글</a>
+                <a class="nav-link active" href="{% url 'pybo:profile_comment' username=profile_user.username %}">댓글</a>
             </li>
         </ul>
         <div class="row justify-content-between my-3">
             <div class="col-2">
                 <select class="form-control so">
                     <option value="recent" {% if so == 'recent' %}selected{% endif %}>최신순</option>
-                    <option value="recommend" {% if so == 'recommend' %}selected{% endif %}>추천순</option>
                     <option value="popular" {% if so == 'popular' %}selected{% endif %}>인기순</option>
                 </select>
             </div>
@@ -50,6 +49,7 @@
                 </td>
                 <td class="text-left">
                     <a href="{% url 'pybo:detail' comment.question.id %}">{{ comment.content }}</a>
+                    <span class="text-danger small ml-2">답변 {{ comment.question.answer_set.count }}</span>
                 </td>
                 <td>
                     <a href="{% url 'pybo:profile_question' comment.question.author.username %}">{{ comment.author.username }}</a>
@@ -104,7 +104,7 @@
         <!-- 페이징처리 끝 -->
     </div>
 </div>
-<form id="searchForm" method="get" action="{% url 'pybo:profile_comment' username=user.username %}">
+<form id="searchForm" method="get" action="{% url 'pybo:profile_comment' username=profile_user.username %}">
     <input type="hidden" id="page" name="page" value="{{ page }}">
     <input type="hidden" id="so" name="so" value="{{ so }}">
 </form>
