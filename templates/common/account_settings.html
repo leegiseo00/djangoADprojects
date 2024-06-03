@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-3 d-flex">
+    <div class="col-10 flex-grow-1">
+        <h2>계정설정</h2>
+        <ul class="border-bottom"></ul>
+        <h5>비밀번호 변경</h5>
+        <form action="{% url 'common:account_settings' %}" method="post">
+            {% csrf_token %}
+            {{ password_form.as_p }}
+            <button type="submit" name="password_submit" class="btn btn-primary">비밀번호 수정</button>
+        </form>
+        <ul class="border-bottom"></ul>
+        <h5>자기소개 수정</h5>
+        <form action="{% url 'common:account_settings' %}" method="post">
+            {% csrf_token %}
+            {{ profile_form.as_p }}
+            <button type="submit" name="profile_submit" class="btn btn-primary">자기소개 수정</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
