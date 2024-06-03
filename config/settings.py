@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
+# 카카오인증키
+# 7be96a04b6ba84d9e96ee23b30d6efc3
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
